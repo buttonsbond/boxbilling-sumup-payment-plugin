@@ -9,7 +9,10 @@ A payment processor using SumUp whom I already use for my credit and debit card 
 
 Drop the file in your box billing installation, bb-library/payment/adaptor folder, then enable it in the configuration of boxbilling.
 
-You'll need to ask SumUp to give you the API credentials you need as well as the scope 'payments' - I started off with test credentials whilst I developed the plugin. It seems to work.
+Once logged in to your sumup account you will first of all need to go to the 'For Developers' section which you'll find under profile. You will need to create some OAuth credentials for Web App but first fill in the section consent screen (the plugin doesn't actually require this but SumUp do before you can create the OAuth stuff). Create client credentials - give the client a name (something like Your company name SumUp payments), web app, and redirect URL (get the redirect URL from the plugins config screen).
+Once you've done this download the file as you will need the client_id and client_secret to configure the plugin. You will also need your Merchant ID which you will find under your SumUp profile - profile details, business information.
+Now you'll need to ask SumUp to enable the scope 'payments' for you - I started off with test credentials whilst I developed the plugin. It seems to work.
+It will probably take a day or 3 for SumUp to come back to you on this. The plugin won't work until 'payments' is enabled. No idea why it isn't enabled by default!
 
 If you find the plugin useful, please consider buying me a beer, you can donate here: 
 
