@@ -20,9 +20,13 @@ https://www.paypal.com/donate?hosted_button_id=EPJLLK8V84GFC
 
 If you haven't signed up for SumUp yet, use my referral link and we both get rewarded (at the time of writing, 15 euros each, so that gives you money off your terminal device, well worth having) - http://r.sumup.com/referrals/quskP
 
-## Changelog ##
+# Changelog #
 09/04/21 - CURL_SETOPT_VERIFYHOST was using 1 and needs to be 2 in later versions of PHP
+
 09/04/21 - defined constant names didn't have quotes around them - threw a warning, now fixed
+
 09/04/21 - missed some quotes around $data['totaltopay'] - fixed
+
 09/04/21 - the generateform function provided by the original template expects a url parameter - I hadn't define that variable as I didn't actually use it so I've just set it to the same as the constant CHECKOUT_URL
+
 09/04/21 - had an instance of 'email' which should have been 'pay_to_email' - fixed.
