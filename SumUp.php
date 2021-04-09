@@ -13,9 +13,9 @@
  * source code is on GitHub https://github.com/buttonsbond/boxbilling-sumup-payment-plugin
  *
  */
- DEFINE (AUTH_URL,"https://api.sumup.com/authorize");
- DEFINE (TOKEN_URL,"https://api.sumup.com/token");
- DEFINE (CHECKOUT_URL,"https://api.sumup.com/v0.1/checkouts");
+ DEFINE ("AUTH_URL","https://api.sumup.com/authorize");
+ DEFINE ("TOKEN_URL","https://api.sumup.com/token");
+ DEFINE ("CHECKOUT_URL","https://api.sumup.com/v0.1/checkouts");
  
  // we will want SumUp to allow us to access a 'restricted scope' when we
  // authorize ourselves with the API - we will specifically want 'payments'
@@ -140,13 +140,16 @@ class Payment_Adapter_SumUp
         $data = array();
             $data['itemname']        = $title;
             $data['currency']        = $invoice['currency'];
-            $data['merchant']        = $this->config['email'];
+            $data['merchant']        = $this->config['pay_to_email'];
             $data['clientemail']    = $invoice['client']['email'];
             $data['totaltopay']         = $invoice['total'];
             $data['locale'] = "en-GB"; // this will be overridden by config if it is set
         //$db="<pre>";
        // $db=print_r($invoice);
        // $db.="</pre>";
+       // 09/04/21 - calling the generate form with $url - this wasn't defined, and I haven't actually used it in the function stub that was already in the template
+       // so I'm just going to set it to CHECKOUT_URL
+       $url=CHECKOUT_URL;
         return $this->_generateForm($url, $data);
     }
 
@@ -198,8 +201,8 @@ function get_sumup_token() {
         // return url is where the status of the transaction is sent
         
         // change from redirect so both are notify 
-        $redirecturl=$this->config['redirect_url'] . "&currency=" . $data['currency'] . "&amount=" . $data[totaltopay] . "&pay_to_email=" . $payto;
-        $returnurl=$this->config['notify_url'] . "&currency=" . $data['currency'] . "&amount=" . $data[totaltopay] . "&pay_to_email=" . $payto;;
+        $redirecturl=$this->config['redirect_url'] . "&currency=" . $data['currency'] . "&amount=" . $data['totaltopay'] . "&pay_to_email=" . $payto;
+        $returnurl=$this->config['notify_url'] . "&currency=" . $data['currency'] . "&amount=" . $data['totaltopay'] . "&pay_to_email=" . $payto;;
         
         $mycheckout=Array('checkout_reference'=>$myuniqueid,'amount'=>$data['totaltopay'],'currency'=>$data['currency'],'pay_to_email'=>$payto,'description'=>$data['itemname'], 'merchant_code'=>$mcode, 'redirect_url'=>$redirecturl,'return-url'=>$returnurl);
         
@@ -337,7 +340,8 @@ function sumup_query($url, $params, $delim, $postorget, $at) {
               
               curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
               curl_setopt($curl, CURLOPT_TIMEOUT, 200);
-              curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 1);
+              // changed verifyhost from 1 to 2 as 1 is no longer accepted in later php versions
+              curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
               curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 1);
     
               // Run cURL and check for errors
